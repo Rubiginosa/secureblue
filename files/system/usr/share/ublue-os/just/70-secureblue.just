@@ -407,7 +407,7 @@ audit-secureblue:
     fi
 
     SYSCTL_TEST_STRING="Ensuring no modprobe overrides"
-    if diff /usr/etc/modprobe.d/blacklist.conf /etc/modprobe.d/blacklist.conf > /dev/null; then
+    if diff -r /usr/etc/modprobe.d /etc/modprobe.d > /dev/null; then
         print_status "$SYSCTL_TEST_STRING" "$STATUS_SUCCESS"
     else
         print_status "$SYSCTL_TEST_STRING" "$STATUS_FAILURE"
