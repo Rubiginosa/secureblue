@@ -1,6 +1,7 @@
 # setup system DNS resolution
 dns-selector:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     # constants
     readonly resolved_conf="/etc/systemd/resolved.conf.d/10-securedns.conf"
     readonly policy_file="/etc/chromium/policies/managed/10-securedns-browser.json"

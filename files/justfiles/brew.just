@@ -15,6 +15,7 @@ alias brew := install-brew
 # Install Homebrew (Brew is now included by default. This command remains included for utility.)
 install-brew:
     #!/usr/bin/env bash
+    set -euo pipefail
     source /usr/lib/ujust/ujust.sh
     if [[ ! -f "/var/home/linuxbrew/.linuxbrew/bin" || ! -x "/var/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
         echo "${b}Brew Installation${n}"
@@ -33,6 +34,7 @@ install-brew:
 # Removes Homebrew from system. Warning! This will break MOTD and profile.d!
 remove-brew:
     #!/usr/bin/env bash
+    set -euo pipefail
     echo "Removing Homebrew is NOT supported."
     echo "Doing so will break MOTD and profile.d!"
     echo "Do you understand?"

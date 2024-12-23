@@ -1,6 +1,7 @@
 # Harden flatpaks by preloading hardened_malloc (highest supported hwcap). When called with a flatpak application ID as an argument, applies the overrides to that application instead of globally.
 harden-flatpak FLATPAK="":
     #!/usr/bin/bash
+    set -euo pipefail
     var1={{ FLATPAK }}
     flatpak_id="${var1:-}"
     flatpak override --user --filesystem=host-os:ro $flatpak_id
@@ -17,6 +18,7 @@ harden-flatpak FLATPAK="":
 # Harden Flatpaks further by disabling all permissions by default and rejecting known arbitrary DBus names, applies only to the current user
 flatpak-permissions-lockdown:
     #!/usr/bin/bash
+    set -euo pipefail
     kCommand="flatpak override --user"
     kSharePermissions=("network" "ipc")
     kSocketPermissions=("inherit-wayland-socket" "gpg-agent" "cups" "pcsc" "ssh-auth" "system-bus" "session-bus" "pulseaudio" "fallback-x11" "x11")
@@ -105,6 +107,7 @@ flatpak-permissions-lockdown:
 # Setup USBGuard
 setup-usbguard:
     #!/usr/bin/bash
+    set -euo pipefail
     echo "Notice: This will generate a policy based on your existing connected USB devices."
     ACTIVE_USERNAME=$(whoami)
     run0 sh -c '

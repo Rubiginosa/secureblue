@@ -162,6 +162,7 @@ semodule-check MODULE:
 # Install Steam via choice of 3 methods
 install-steam:
     #!/usr/bin/bash
+    set -euo pipefail
     if [ -z "$(pgrep Xwayland)" ] && [ -z "$(pgrep Xorg)" ] ; then
         echo "Steam requires X or Xwayland, which your variant of secureblue has disabled by default."
         echo "Please run 'ujust toggle-xwayland' to re-enable it."

@@ -1,6 +1,7 @@
 # Toggle the cups service on/off
 toggle-cups:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     if systemctl is-enabled --quiet cups; then
       firewall-cmd --permanent --remove-port=631/tcp
       firewall-cmd --permanent --remove-port=631/udp 
@@ -24,6 +25,7 @@ toggle-cups:
 # Toggle bluetooth kernel modules on/off (requires reboot)
 toggle-bluetooth-modules:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     BLUE_MOD_FILE="/etc/modprobe.d/99-bluetooth.conf"
     if test -e $BLUE_MOD_FILE; then
       rm -f $BLUE_MOD_FILE
@@ -38,6 +40,7 @@ toggle-bluetooth-modules:
 # Toggle GHNS (KDE Get New Stuff)
 toggle-ghns:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     KDE_GLOBALS_FILE="/etc/xdg/kdeglobals"
     if test -e $KDE_GLOBALS_FILE; then
       if grep -q "ghns=false" "$KDE_GLOBALS_FILE"; then
@@ -56,6 +59,7 @@ toggle-ghns:
 # enable a kernel module that is disabled by modprobe.d (requires restart)
 override-enable-module mod_name:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     MOD_NAME="{{ mod_name }}"
     MOD_FILE="/etc/modprobe.d/99-$MOD_NAME.conf"
     if test -e $MOD_FILE; then
@@ -69,6 +73,7 @@ override-enable-module mod_name:
 # reset the override by `just override-enable-module`, i.e. disable the module again (requires restart)
 override-reset-module mod_name:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     MOD_NAME="{{ mod_name }}"
     MOD_FILE="/etc/modprobe.d/99-$MOD_NAME.conf"
     if test -e $MOD_FILE; then
@@ -81,6 +86,7 @@ override-reset-module mod_name:
 # Toggle anticheat support by changing ptrace scope (requires restart)
 toggle-anticheat-support:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     SYSCTL_HARDENING_FILE="/etc/sysctl.d/hardening.conf"
     if grep -q "kernel.yama.ptrace_scope = 3" "$SYSCTL_HARDENING_FILE"; then
         sed -i "s/kernel.yama.ptrace_scope = 3/kernel.yama.ptrace_scope = 1/" "$SYSCTL_HARDENING_FILE"
@@ -95,6 +101,7 @@ toggle-anticheat-support:
 # Toggle Gnome JIT JavaScript for GJS and WebkitGTK (requires session restart)
 toggle-gnome-jit-js:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     ENV_FILE="/etc/profile.d/gnome-disable-jit.sh"
     if test -e $ENV_FILE; then
         rm -f $ENV_FILE
@@ -108,6 +115,7 @@ toggle-gnome-jit-js:
 # Toggle support for using GNOME user extensions
 toggle-gnome-extensions:
     #!/usr/bin/bash
+    set -euo pipefail
     GSETTING="$(gsettings get org.gnome.shell allow-extension-installation)"
     if [[ "${GSETTING}" == "false" ]]; then
       gsettings set org.gnome.shell allow-extension-installation true
@@ -120,6 +128,7 @@ toggle-gnome-extensions:
 # Toggle Xwayland support
 toggle-xwayland ACTION="prompt":
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     source /usr/lib/ujust/ujust.sh
     OPTION={{ ACTION }}
     if [ "$OPTION" == "prompt" ]; then
@@ -178,6 +187,7 @@ toggle-xwayland ACTION="prompt":
 # Toggle bash environment lockdown (mitigates LD_PRELOAD attacks)
 toggle-bash-environment-lockdown:
     #!/usr/bin/bash
+    set -euo pipefail
     BASH_ENV_FILES=("$HOME/.bashrc" "$HOME/.bash_profile")
     echo "${b}WARNING${n} This will overwrite your .bashrc and .bash_profile."
     echo "This is needed to ensure the mitigation is effective."
@@ -234,6 +244,7 @@ toggle-bash-environment-lockdown:
 # Toggle unconfined domain userns creation
 toggle-unconfined-domain-userns-creation:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     MODULE_NAME="harden_userns"
 
     if semodule -l | grep -q "$MODULE_NAME"; then
@@ -249,6 +260,7 @@ toggle-unconfined-domain-userns-creation:
 # Toggle container domain userns creation
 toggle-container-domain-userns-creation:
     #! /bin/run0 /bin/bash
+    set -euo pipefail
     MODULE_NAME="harden_container_userns"
 
     if semodule -l | grep -q "$MODULE_NAME"; then
