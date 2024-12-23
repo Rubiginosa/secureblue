@@ -1,6 +1,7 @@
 # Audit secureblue
 audit-secureblue:
     #!/bin/bash
+    set -euo pipefail
 
     STATUS_SUCCESS="SUCCESS"
     STATUS_WARNING="WARNING"
@@ -106,7 +107,8 @@ audit-secureblue:
             fi
         done
     done
-    if [[ "${#sysctl_errors}" == 0 ]] && diff /usr/etc/sysctl.d/hardening.conf /etc/sysctl.d/hardening.conf > /dev/null; then
+    
+    if [[ ! -z ${sysctl_errors+x} && "${#sysctl_errors}" == 0 ]] && diff /usr/etc/sysctl.d/hardening.conf /etc/sysctl.d/hardening.conf > /dev/null; then
         print_status "$SYSCTL_TEST_STRING" "$STATUS_SUCCESS"
     else
         print_status "$SYSCTL_TEST_STRING" "$STATUS_FAILURE"
@@ -388,12 +390,12 @@ audit-secureblue:
                 warnings+=("> $f is missing host-os:ro permission!")
                 suggestions+=("$f is missing host-os:ro permission!	This is required to load hardened_malloc.	To add it use Flatseal or run:	\$ flatpak override -u --filesystem=host-os:ro $f")
             fi
-            if [[ "$bluetooth_loaded" == "true" ]] && hasPermission "$permissions" "features" "bluetooth"; then
+            if [[ ! -z ${bluetooth_loaded+x} && "$bluetooth_loaded" == "true" ]] && hasPermission "$permissions" "features" "bluetooth"; then
                 status="$STATUS_FAILURE"
                 warnings+=("> $f has bluetooth access!")
                 suggestions+=("$f has bluetooth access	To remove it use Flatseal or run:	\$ flatpak override -u --disallow=bluetooth $f")
             fi
-            if [[ "$ptrace_allowed" == "true" ]] && hasPermission "$permissions" "features" "devel"; then
+            if [[ ! -z ${ptrace_allowd+x} && "$ptrace_allowed" == "true" ]] && hasPermission "$permissions" "features" "devel"; then
                 status="$STATUS_FAILURE"
                 warnings+=("> $f has ptrace access!")
                 suggestions+=("$f has ptrace access	To remove it use Flatseal or run:	\$ flatpak override -u --disallow=devel $f")
@@ -414,7 +416,6 @@ audit-secureblue:
                 echo "$warning"
             done
         done
-
         print_heading Recommendations
         for suggestion in "${suggestions[@]}"; do
             readarray -t -d '	' list < <(printf "$suggestion")
