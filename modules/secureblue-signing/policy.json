@@ -83,6 +83,24 @@
                   }
               }
           ],
+          "ghcr.io/blue-build/cli": [
+              {
+                  "type": "sigstoreSigned",
+                  "keyPath": "/usr/etc/pki/containers/bluebuild-cli.pub",
+                  "signedIdentity": {
+                      "type": "matchRepository"
+                  }
+              }
+          ],
+          "ghcr.io/blue-build/modules": [
+              {
+                  "type": "sigstoreSigned",
+                  "keyPath": "/usr/etc/pki/containers/bluebuild-modules.pub",
+                  "signedIdentity": {
+                      "type": "matchRepository"
+                  }
+              }
+          ],
           "": [
               {
                   "type": "reject"
