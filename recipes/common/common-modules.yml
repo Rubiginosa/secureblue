@@ -12,7 +12,7 @@
 
 modules:
     - type: script
-      source: ghcr.io/blue-build/modules@sha256:b143423fb9560a24f362db36621c7e81da56551d32fbbc97e267e811dd7f0c27
+      source: ghcr.io/blue-build/modules@sha256:079ae754f5b57e8f2ca5850b33a633b3fe1c37f4be51e7b00e9250a997f4e334
       scripts:
         - addrepos.sh
         - createautostartdir.sh
@@ -20,7 +20,7 @@ modules:
         - unprotectsudo.sh
     - from-file: common/common-packages.yml
     - type: files
-      source: ghcr.io/blue-build/modules@sha256:b143423fb9560a24f362db36621c7e81da56551d32fbbc97e267e811dd7f0c27
+      source: ghcr.io/blue-build/modules@sha256:079ae754f5b57e8f2ca5850b33a633b3fe1c37f4be51e7b00e9250a997f4e334
       files:
         - source: system/usr
           destination: /usr
@@ -28,12 +28,12 @@ modules:
           destination: /etc
     - from-file: common/common-scripts.yml
     - type: justfiles
-      source: ghcr.io/blue-build/modules@sha256:b143423fb9560a24f362db36621c7e81da56551d32fbbc97e267e811dd7f0c27
+      source: ghcr.io/blue-build/modules@sha256:079ae754f5b57e8f2ca5850b33a633b3fe1c37f4be51e7b00e9250a997f4e334
       validate: true
       include:
         - common
     - type: script
-      source: ghcr.io/blue-build/modules@sha256:b143423fb9560a24f362db36621c7e81da56551d32fbbc97e267e811dd7f0c27
+      source: ghcr.io/blue-build/modules@sha256:079ae754f5b57e8f2ca5850b33a633b3fe1c37f4be51e7b00e9250a997f4e334
       scripts:
         - signkernel.sh
       secrets:
